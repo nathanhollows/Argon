@@ -161,7 +161,7 @@ nav li.brand a {
 .tiles {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(12em, 1fr));
-    gap: 2em 2em;
+    gap: var(--spacing) var(--spacing);
 }
 
 .tile {
@@ -231,4 +231,8 @@ nav li.brand a {
 .tile img {
     width: 40%;
     align-self: center;
+}
+
+.infographic img {
+    margin-bottom: -1px;
 }
