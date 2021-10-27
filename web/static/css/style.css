@@ -233,6 +233,10 @@ nav li.brand a {
     align-self: center;
 }
 
+.infographic {
+    margin: 0 -1em;
+}
+
 .infographic img {
     margin-bottom: -1px;
 }
