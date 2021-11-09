@@ -1,6 +1,6 @@
 {{ define "base" }}
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 
 <head>
     <!-- Required meta tags -->
@@ -22,10 +22,19 @@
             <ul>
                 {{ $section := "" }}
                 {{ if .section }}{{ $section = .section }}{{ end }}
-                <li><a href="{{ url }}" class="{{ if eq $section "index"}}active{{ end }}">QR Trails</a></li>
-                <li><a href="{{ url "library" }}" class="secondary{{ if eq $section "library"}} active{{ end }}">My Library</a></li>
+                <li>
+                    <a href="{{ url }}">
+                        <img src="/public/img/logo.svg" style="width: 7em;margin-left: auto;margin-right: auto;">
+                    </a>
+                </li>
+                <li>
+                    <img src="/public/img/otago.svg" style="width: 3em;margin-left: auto;margin-right: auto;">
+                </li>
             </ul>
         </nav>
+        <div id="chevron">
+            <img src="/public/img/chevron.svg">
+        </div>
     </div>
     {{ template "body" .}}
     <footer id="footer">

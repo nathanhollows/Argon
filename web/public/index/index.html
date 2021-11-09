@@ -1,15 +1,13 @@
 {{ define "body" }}
-<div style="border-bottom: 1px solid black;">
-    <div class="container found">
-        <hgroup>
-            {{ $count := 0}}
-            {{ range .trails }}
-            {{ $count = (add $count .Found) }}
-            {{ end }}
-            <h1>Found {{ $count }}/{{ len .pages }}</h1>
-            <h2>Otago Museum</h2>
-        </hgroup>
-    </div>
+<div class="container found">
+    <hgroup>
+        {{ $count := 0}}
+        {{ range .trails }}
+        {{ $count = (add $count .Found) }}
+        {{ end }}
+        <h1>Found {{ $count }}/{{ len .pages }}</h1>
+        <h2>Otago Museum</h2>
+    </hgroup>
 </div>
 <main class="container">
     <hgroup>
