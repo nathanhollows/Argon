@@ -7,7 +7,7 @@ body {
 }
 */
 
-[data-theme=dark] {
+:root:not([data-theme="light"]) {
     --background-color: black;
     --font-family: Avenir,Helvetica,Arial,sans-serif;
     --color-info: #68cbde;
