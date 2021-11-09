@@ -15,4 +15,4 @@
 # vendor/
 trace.db
 main
-/web/static/upload/*
+/web/static/img/upload/*
