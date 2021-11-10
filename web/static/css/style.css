@@ -8,6 +8,7 @@ body {
 */
 
 :root:not([data-theme="light"]) {
+    --primary: #ffe068;
     --background-color: black;
     --font-family: Avenir,Helvetica,Arial,sans-serif;
     --color-info: #68cbde;
@@ -183,7 +184,6 @@ nav li.brand a {
     flex-direction: column;
     text-align: center;
     padding: 1em;
-    border-radius: 6px;
 }
 
 @media (max-width:447px) {
@@ -197,7 +197,7 @@ nav li.brand a {
     color: black;
 }
 
-.tile.found h3 {
+.tile h3 {
     transition: 0.1s;
     font-size: 1.25rem;
 }

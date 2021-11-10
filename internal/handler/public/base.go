@@ -31,6 +31,9 @@ var funcs = template.FuncMap{
 	"add": func(a, b int) int {
 		return a + b
 	},
+	"sub": func(a, b int) int {
+		return a - b
+	},
 	"url": func(s ...string) string {
 		return helpers.URL(s...)
 	},

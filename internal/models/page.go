@@ -41,7 +41,7 @@ LEFT JOIN
 WHERE pages.deleted_at IS NULL
 AND pages.published IS TRUE
 GROUP BY pages.code
-ORDER BY trail, gallery;`
+ORDER BY seen DESC, trail, gallery;`
 
 // ResultsTrailCounts holds the values of a custom query
 type ResultsTrailCounts struct {
