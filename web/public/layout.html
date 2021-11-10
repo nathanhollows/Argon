@@ -32,24 +32,92 @@
                 </li>
             </ul>
         </nav>
-        <div id="chevron">
-            <img src="/public/img/chevron.svg">
-        </div>
-    </div>
-    {{ template "body" .}}
-    <footer id="footer">
-        <nav class="container">
-            <ul>
-                <li><a href="{{ url "about" }}">About</a></li>
-                <li><a href="{{ url "privacy" }}">Privacy</a></li>
-                <li><a href="{{ url "admin" }}">Admin</a></li>
-            </ul>
-            <ul>
-                <li id="copyright"><small>©{{ currentYear }} Otago Museum – all rights reserved. </small></li>
-            </ul>
-        </nav>
-    </footer>
-</body>
+        <div id="chevron" class="busy">
+            <svg
+            svg-inline=""
+            role="presentation"
+            focusable="false"
+            data-name="Layer 1"
+            viewBox="0 0 959.92 479.91999"
+            class="chevron"
+            version="1.1"
+            id="svg12"
+            sodipodi:docname="chevron.svg"
+            width="959.91998"
+            height="479.91998"
+            inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+            xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+            xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:svg="http://www.w3.org/2000/svg">
+            <defs
+            id="defs16" />
+            <sodipodi:namedview
+            id="namedview14"
+            pagecolor="#ffffff"
+            bordercolor="#999999"
+            borderopacity="1"
+            inkscape:pageshadow="0"
+            inkscape:pageopacity="0"
+            inkscape:pagecheckerboard="0"
+            showgrid="false"
+            inkscape:snap-page="true"
+            inkscape:snap-grids="false"
+            inkscape:zoom="0.62817736"
+            inkscape:cx="479.16404"
+            inkscape:cy="-1.5919071"
+            inkscape:window-width="1920"
+            inkscape:window-height="1020"
+            inkscape:window-x="0"
+            inkscape:window-y="0"
+            inkscape:window-maximized="1"
+            inkscape:current-layer="svg12" />
+            <path
+            id="path5"
+            d="M 959.91992 0 L 903.05078 0 L 480 423.05078 L 56.869141 0 L 0 0 L 479.91992 480 L 959.91992 0 z "
+            style="fill:#ffffff;fill-opacity:1" />
+            <path
+            id="path4"
+            d="M 113.74023 0 L 480 366.17969 L 846.17969 0 L 789.32031 0 L 480 309.31055 L 170.60938 0 L 113.74023 0 z "
+            style="fill:#ffffff;fill-opacity:1" />
+            <path
+            id="path3"
+            d="M 227.4707 0 L 480 252.43945 L 732.44922 0 L 675.58008 0 L 480 195.57031 L 284.33984 0 L 227.4707 0 z "
+            style="fill:#ffffff;fill-opacity:1" />
+            <path
+            id="path2"
+            d="M 341.21094 0 L 480 138.69922 L 618.71094 0 L 561.83984 0 L 480 81.839844 L 398.08008 0 L 341.21094 0 z "
+            style="fill:#ffffff;fill-opacity:1" />
+            <path
+            id="path1"
+            d="M 454.98828 0 L 479.94922 24.970703 L 504.93164 0 L 454.98828 0 z "
+            style="fill:#ffffff;fill-opacity:1" />
+        </svg>
 
-</html>
-{{ end }}
+    </div>
+</div>
+{{ template "body" .}}
+<footer id="footer">
+    <nav class="container">
+        <ul>
+            <li><a href="{{ url "about" }}">About</a></li>
+            <li><a href="{{ url "privacy" }}">Privacy</a></li>
+            <li><a href="{{ url "admin" }}">Admin</a></li>
+        </ul>
+        <ul>
+            <li id="copyright"><small>©{{ currentYear }} Otago Museum</small></li>
+        </ul>
+    </nav>
+</footer>
+<script>
+    if(document.readyState === 'ready' || document.readyState === 'complete') {
+        document.getElementById("chevron").classList.remove("busy")    } else {
+            document.onreadystatechange = function () {
+                if (document.readyState == "complete") {
+                    document.getElementById("chevron").classList.remove("busy")            }
+                }
+            }
+        </script>
+    </body>
+    </html>
+    {{ end }}

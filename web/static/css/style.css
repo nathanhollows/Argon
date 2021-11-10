@@ -267,16 +267,45 @@ nav li.brand a {
     z-index: -1;
 }
 
-#chevron img {
+#chevron svg {
     width: 100%;
+    height: auto;
     opacity: 0.25;
     margin-left: auto;
     margin-right: auto;
 }
 
 @media (min-width:576px) {
-    #chevron img {
+    #chevron svg {
         width: 16em;
         opacity: 0.5;
+    }
+}
+
+.busy #path1 {
+    animation: chevron 5s ease 0s normal infinite;
+}
+.busy #path2 {
+    animation: chevron 5s ease 250ms normal infinite;
+}
+.busy #path3 {
+    animation: chevron 5s ease 500ms normal infinite;
+}
+.busy #path4 {
+    animation: chevron 5s ease 750ms normal infinite;
+}
+.busy #path5 {
+    animation: chevron 5s ease 1s normal infinite;
+}
+
+@keyframes chevron {
+    0% {
+        opacity: 1;
+    }
+    8% {
+        opacity: 0.5;
+    }
+    20% {
+        opacity: 1;
     }
 }
