@@ -79,7 +79,7 @@ func routes() {
 	router.Handle("/logout", handler.HandlePublic{Env: &env, H: public.Logout})
 	router.Handle("/register", handler.HandlePublic{Env: &env, H: public.Register})
 
-	router.Handle("/admin", handler.HandleAdmin{Env: &env, H: admin.Dashboard})
+	router.Handle("/admin", handler.HandleAdmin{Env: &env, H: admin.Pages})
 	router.Handle("/admin/media", handler.HandleAdmin{Env: &env, H: admin.Media})
 	router.Handle("/admin/analytics", handler.HandleAdmin{Env: &env, H: admin.Analytics})
 	router.Handle("/admin/pages", handler.HandleAdmin{Env: &env, H: admin.Pages})
