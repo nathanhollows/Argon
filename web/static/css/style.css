@@ -9,12 +9,17 @@ body {
 
 :root:not([data-theme="light"]) {
     --primary: #ffe068;
+    --primary-hover: #ffd73f;
+    --primary-focus: rgb(66, 61, 41);
     --background-color: black;
     --font-family: Avenir,Helvetica,Arial,sans-serif;
     --color-info: #68cbde;
     --color-success: #e6f494;
     --color-danger: #f69c9b;
     --color-warning: #fecd7e;
+    --border-radius: 0;
+    --contrast: #fff;
+    --contrast-hover: #e1e1e1;
 }
 
 html {
@@ -156,6 +161,10 @@ nav li.brand a {
     html:not(.admin) .container {
         max-width:75ch
     }
+}
+
+#footer #copyright {
+    text-align: end;
 }
 
 /** Admin */
