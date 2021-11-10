@@ -34,7 +34,7 @@ FROM galleries
 JOIN pages ON pages.gallery_id = galleries.id
 JOIN trails ON trails.id = pages.trail_id
 LEFT JOIN
-	(SELECT page_code, true AS seen
+	(SELECT DISTINCT page_code, true AS seen
 		FROM scan_events
 		WHERE user_id = ?)
 	AS scan ON scan.page_code = pages.code
@@ -57,7 +57,7 @@ FROM galleries
 JOIN pages ON pages.gallery_id = galleries.id
 JOIN trails ON trails.id = pages.trail_id
 LEFT JOIN
-	(SELECT page_code, true AS seen
+	(SELECT DISTINCT page_code, true AS seen
 		FROM scan_events
 		WHERE user_id = ?)
 	AS scan ON scan.page_code = pages.code

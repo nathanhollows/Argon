@@ -48,7 +48,6 @@
         {{ end }}
     </div>
 
-    {{ if not (eq $count (len .pages))}}
     <p>Click to "find":</p>
     <ul>
         {{ range .pages }}
@@ -59,7 +58,6 @@
         {{ end }}
         {{ end }}
     </ul>
-    {{ end }}
 </main>
 <style>
     .clue {
