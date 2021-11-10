@@ -32,7 +32,7 @@
                 </li>
             </ul>
         </nav>
-        <div id="chevron" class="busy">
+        <div id="chevron">
             <svg
             svg-inline=""
             role="presentation"
@@ -109,15 +109,6 @@
         </ul>
     </nav>
 </footer>
-<script>
-    if(document.readyState === 'ready' || document.readyState === 'complete') {
-        document.getElementById("chevron").classList.remove("busy")    } else {
-            document.onreadystatechange = function () {
-                if (document.readyState == "complete") {
-                    document.getElementById("chevron").classList.remove("busy")            }
-                }
-            }
-        </script>
-    </body>
-    </html>
-    {{ end }}
+</body>
+</html>
+{{ end }}
