@@ -23,9 +23,8 @@
                 {{ $section := "" }}
                 {{ if .section }}{{ $section = .section }}{{ end }}
                 <li class="brand"><strong>Admin</strong></li>
-                <li><a href="{{ url "admin/" }}" class="secondary{{ if eq $section "dashboard"}} active{{ end }}">Dashboard</a></li>
                 <li><a href="{{ url "admin/pages" }}" class="secondary{{ if eq $section "pages"}} active{{ end }}">Pages</a></li>
-                <li><a href="#" class="secondary{{ if eq $section "media"}} active{{ end }}">Media</a></li>
+                <li><a href="{{ url "admin/media"}}" class="secondary{{ if eq $section "media"}} active{{ end }}">Media</a></li>
                 <li><a href="{{ url "admin/analytics" }}" class="secondary{{ if eq $section "analytics"}} active{{ end }}">Analytics</a></li>
                 <li><a href="{{ url "logout" }}" class="secondary">Logout</a></li>
             </ul>
