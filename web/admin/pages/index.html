@@ -8,8 +8,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">Code</th>
-                <th scope="col">Public</th>
+                <th scope="col" style="text-align: center;" data-tooltip="Published"><img src="{{ url "public/img/icon/eye-fill.svg" }}"></th>
                 <th scope="col">Title</th>
                 <th scope="col">Gallery</th>
                 <th scope="col">Trail</th>
@@ -19,13 +18,11 @@
         <tbody>
             {{ range .pages}}
             <tr>
-                <th scope="row">
-                    <a href="{{ url (print "admin/pages/edit/" .Code) }}">
-                        {{ .Code }}
-                    </a>
-                </th>
                 <td style="text-align: center;">{{if .Published }}✔{{end}}</td>
-                <td>{{ .Title }}</td>
+                <td>
+                    <a href="{{ url (print "admin/pages/edit/" .Code) }}">
+                        {{ .Title }}
+                    </a>
                 <td>{{ .Gallery.Gallery }}</td>
                 <td>{{ .Trail.Trail }}</td>
                 <td>
@@ -37,8 +34,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <th scope="col">Code</th>
-                <th scope="col">Public</th>
+                <th scope="col" style="text-align: center;" data-tooltip="Published"><img src="{{ url "public/img/icon/eye-fill.svg" }}"></th>
                 <th scope="col">Title</th>
                 <th scope="col">Gallery</th>
                 <th scope="col">Trail</th>

@@ -2,6 +2,35 @@
 <main class="container">
     <h1>Media</h1>
     {{ template "flash" . }}
+    <p>The media section is going to be a colossal amount of work to get going. This will be the section that allows for custom media uploads. It will also run conversions behind the scenes.</p>
+    <label for="image">Cover Image</label>
 
+    <div class="file-area">
+        <input type="file" name="files" id="files"/>
+        <div class="file-dummy">
+            {{ if .page.Cover.File }}
+            <img src="{{ .page.Cover.ImgURL "small" }}" id="cover-img">
+            {{ else }}
+            <img id="cover-img" src="">
+            {{ end }}
+            <div class="success" aria-busy="true">Uploading cover image...</div>
+            <div class="default">Drop cover image here</div>
+        </div>
+    </div>
 </main>
+<script>
+    document.getElementById("files").addEventListener('change', event => {
+        uploadImage().then(data => thenCover(data))
+    });
+    async function uploadImage() {
+        let formData = new FormData();
+        formData.append("file", image.files[0]);
+        formData.append("geosite", "{{ .page.Code }}")
+        const response = await fetch('{{ url "admin/upload" }}', {
+            method: "POST",
+            body: formData
+        });
+        return response
+    }
+</script>
 {{ end }}
