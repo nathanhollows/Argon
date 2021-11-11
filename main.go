@@ -49,6 +49,7 @@ func init() {
 
 func main() {
 	env.DB.AutoMigrate(
+		&models.Admin{},
 		&models.ScanEvent{},
 		&models.User{},
 		&models.Page{},
@@ -77,7 +78,6 @@ func routes() {
 
 	router.Handle("/login", handler.HandlePublic{Env: &env, H: public.Login})
 	router.Handle("/logout", handler.HandlePublic{Env: &env, H: public.Logout})
-	router.Handle("/register", handler.HandlePublic{Env: &env, H: public.Register})
 
 	router.Handle("/admin", handler.HandleAdmin{Env: &env, H: admin.Pages})
 	router.Handle("/admin/media", handler.HandleAdmin{Env: &env, H: admin.Media})

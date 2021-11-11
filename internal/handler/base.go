@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/sessions"
+	"github.com/nathanhollows/Argon/internal/helpers"
 	"gorm.io/gorm"
 )
 
@@ -69,7 +70,12 @@ func (h HandlePublic) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h HandleAdmin) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	err := h.H(h.Env, w, r)
+	session, err := h.Env.Session.Get(r, "admin")
+	if err != nil || session.Values["id"] == nil {
+		http.Redirect(w, r, helpers.URL("login"), 302)
+	}
+
+	err = h.H(h.Env, w, r)
 	if err != nil {
 		switch e := err.(type) {
 		case Error:

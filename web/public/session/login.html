@@ -1,17 +1,18 @@
 {{ define "body" }}
-    <main class="container">
-      <article class="grid">
-        <div>
-          <hgroup>
-            <h1>Sign In</h1>
-            <h2>Admin Panel</h2>
-          </hgroup>
-          <form>
-            <input type="text" name="text" placeholder="Username" aria-label="Username" required>
-            <input type="password" name="password" placeholder="Password" aria-label="Password" required>
-            <button type="submit" class="contrast">Submit</button>
-          </form>
-        </div>
-      </article>
-    </main><!-- ./ Main -->
+<main class="container">
+  {{ template "flash" . }}
+  <article class="grid">
+    <div>
+      <hgroup>
+        <h1>Sign In</h1>
+        <h2>Admin Panel</h2>
+      </hgroup>
+      <form method="post">
+        <input type="text" name="username" placeholder="Username" aria-label="Username" required>
+        <input type="password" name="password" placeholder="Password" aria-label="Password" required>
+        <button type="submit" class="contrast">Submit</button>
+      </form>
+    </div>
+  </article>
+</main><!-- ./ Main -->
 {{ end }}
