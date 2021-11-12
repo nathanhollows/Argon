@@ -10,6 +10,7 @@ import (
 	"github.com/nathanhollows/Argon/internal/helpers"
 	"github.com/nathanhollows/Argon/internal/models"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 // Login handles user logins
@@ -72,4 +73,19 @@ func hashPassword(password string) (string, error) {
 func checkHashPassword(hash string, password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
+}
+
+func createUser(username string, password string, db *gorm.DB) error {
+	user := models.Admin{}
+	user.Username = username
+	pw, err := hashPassword(password)
+	if err != nil {
+		return err
+	}
+	user.Password = pw
+	result := db.Model(&models.Admin{}).Create(&user)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
 }
