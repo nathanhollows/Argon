@@ -35,6 +35,9 @@ func Index(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 
 	var pages []models.ResultFoundPages
 	env.DB.Raw(models.QueryFindPagesByUser, session.Values["id"]).Scan(&pages)
+	for i, _ := range pages {
+		env.DB.Model(&models.Media{}).Where("id = ?", pages[i].CoverID).Limit(1).Find(&pages[i].Cover)
+	}
 	data["pages"] = pages
 	return render(w, data, "index/index.html")
 }

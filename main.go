@@ -81,6 +81,7 @@ func routes() {
 
 	router.Handle("/admin", handler.HandleAdmin{Env: &env, H: admin.Pages})
 	router.Handle("/admin/media", handler.HandleAdmin{Env: &env, H: admin.Media})
+	router.Handle("/admin/upload", handler.HandleAdmin{Env: &env, H: admin.Upload})
 	router.Handle("/admin/analytics", handler.HandleAdmin{Env: &env, H: admin.Analytics})
 	router.Handle("/admin/pages", handler.HandleAdmin{Env: &env, H: admin.Pages})
 	router.Handle("/admin/pages/delete", handler.HandleAdmin{Env: &env, H: admin.DeletePage})

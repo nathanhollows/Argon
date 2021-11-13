@@ -17,6 +17,8 @@ type Page struct {
 	Trail     Trail   `gorm:"references:ID"`
 	GalleryID int     `sql:"DEFAULT:NULL"`
 	Gallery   Gallery `gorm:"references:ID"`
+	CoverID   int     `sql:"DEFAULT:NULL"`
+	Cover     Media   `gorm:"references:ID"`
 }
 
 // ResultFoundPages holds the values of a custom query
@@ -26,10 +28,12 @@ type ResultFoundPages struct {
 	Gallery string
 	Trail   string
 	Seen    bool
+	CoverID int
+	Cover   Media
 }
 
 // QueryFindPagesByUser returns []FoundPage for a given user
-var QueryFindPagesByUser = `SELECT pages.code, pages.title, gallery, trails.trail, scan.seen
+var QueryFindPagesByUser = `SELECT pages.code, pages.title, gallery, trails.trail, scan.seen, pages.cover_id
 FROM galleries
 JOIN pages ON pages.gallery_id = galleries.id
 JOIN trails ON trails.id = pages.trail_id

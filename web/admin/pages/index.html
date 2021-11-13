@@ -8,7 +8,8 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col" style="text-align: center;" data-tooltip="Published"><img src="{{ url "public/img/icon/eye-fill.svg" }}"></th>
+                <th scope="col" style="text-align: center;" data-tooltip="Published"><img src="{{ url "public/img/icon/eye.svg" }}"></th>
+                <th scope="col" style="text-align: center;" data-tooltip="Cover Image"><img src="{{ url "public/img/icon/image.svg" }}"></th>
                 <th scope="col">Title</th>
                 <th scope="col">Gallery</th>
                 <th scope="col">Trail</th>
@@ -19,6 +20,7 @@
             {{ range .pages}}
             <tr>
                 <td style="text-align: center;">{{if .Published }}✔{{end}}</td>
+                <td style="text-align: center;">{{if .Cover.ID }}✔{{end}}</td>
                 <td>
                     <a href="{{ url (print "admin/pages/edit/" .Code) }}">
                         {{ .Title }}
@@ -34,7 +36,8 @@
         </tbody>
         <tfoot>
             <tr>
-                <th scope="col" style="text-align: center;" data-tooltip="Published"><img src="{{ url "public/img/icon/eye-fill.svg" }}"></th>
+                <th scope="col" style="text-align: center;" data-tooltip="Published"><img src="{{ url "public/img/icon/eye.svg" }}"></th>
+                <th scope="col" style="text-align: center;" data-tooltip="Cover Image"><img src="{{ url "public/img/icon/image.svg" }}"></th>
                 <th scope="col">Title</th>
                 <th scope="col">Gallery</th>
                 <th scope="col">Trail</th>
