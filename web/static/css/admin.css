@@ -1,0 +1,151 @@
+/**
+body {
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: lighter;
+    color: #1a1a1a;
+}
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-transform: uppercase;
+    font-family: var(--font-family);
+}
+
+article[role="alert"] {
+    padding: 1.5rem 2rem;
+    border-radius: unset;
+    box-shadow: unset;
+    outline: 1px solid var(--contrast);
+    color: var(--contrast);
+}
+
+article[role="alert"].info {
+    background: var(--color-info);
+}
+
+article[role="alert"].warning {
+    background: var(--color-warning);
+}
+
+article[role="alert"].danger {
+    background: var(--color-danger);
+}
+
+article[role="alert"].success {
+    background: var(--color-success);
+}
+
+main > article[role="alert"]:first-child {
+    margin-top: 0;
+}
+
+article > :last-child:not(blockquote) {
+    margin-bottom: 0;
+}
+
+li ul, li ol {
+    margin-top: calc(var(--typography-spacing-vertical) / 4);
+}
+
+tfoot th {
+    border-top: var(--border-width) solid var(--table-border-color);
+    --border-width: 3px;
+    border-bottom: unset;
+}
+
+video {
+    max-width: 100%;
+    width: 100%;
+}
+
+/** Header */
+.admin #header {
+    background-color: var(--mark-background-color);
+}
+
+#header {
+    text-transform: uppercase;
+}
+
+#header nav ul {
+    width: 100%;
+    justify-content: space-between;
+}
+
+nav li:not(.brand) a, nav li:not(.brand) {
+    color: var(--contrast);
+}
+
+nav li.brand a:hover, nav li a:hover {
+    color: var(--primary);
+}
+
+nav li:not(.brand) a.active {
+    color: var(--primary);
+}
+
+
+nav li.brand {
+    padding-left: 1em;
+    padding-right: 1em;
+    background-color: var(--contrast);
+    color: var(--contrast-inverse);
+}
+
+nav li.brand a {
+    color: var(--contrast-inverse);
+}
+
+.found {
+    padding-top: var(--typography-spacing-vertical);
+}
+
+.found hgroup {
+    border-bottom: 0.5em solid white;
+    display: inline-block;
+    padding: 0 3em 1em 0;
+}
+
+/** Footer */
+
+#footer {
+    color: #F3F3F3;
+    padding: 10px 0;
+    margin-top: auto;
+}
+
+#footer .container {
+    border-top: 0.5em solid white;
+}
+
+@media (min-width:1200px) {
+    html:not(.admin) .container {
+        max-width:75ch
+    }
+}
+
+#footer #copyright {
+    text-align: end;
+}
+
+/** Admin */
+#actions hgroup, #actions h1 {
+    display: inline-block;
+}
+#actions a {
+    float: right;
+}
+
+.infographic {
+    margin: 0 -1em;
+}
+
+.infographic img {
+    margin-bottom: -1px;
+}

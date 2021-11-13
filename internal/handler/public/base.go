@@ -1,9 +1,11 @@
 package public
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -39,6 +41,14 @@ var funcs = template.FuncMap{
 	},
 	"currentYear": func() int {
 		return time.Now().UTC().Year()
+	},
+	"stylesheetversion": func() string {
+		file, err := os.Stat("web/static/css/style.css")
+		if err != nil {
+			fmt.Println(err)
+		}
+		modifiedtime := file.ModTime().Nanosecond()
+		return fmt.Sprint(modifiedtime)
 	},
 }
 
