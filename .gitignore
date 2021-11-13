@@ -16,3 +16,4 @@
 trace.db
 main
 /web/static/img/upload/*
+/web/static/uploads/
