@@ -2,35 +2,167 @@
 <main class="container">
     <h1>Media</h1>
     {{ template "flash" . }}
-    <p>The media section is going to be a colossal amount of work to get going. This will be the section that allows for custom media uploads. It will also run conversions behind the scenes.</p>
-    <label for="image">Cover Image</label>
-
+    
+    <label for="upload">Upload media</label>
+    
     <div class="file-area">
-        <input type="file" name="files" id="files"/>
+        <input type="file" name="upload" id="upload" required="required" multiple/>
         <div class="file-dummy">
-            {{ if .page.Cover.File }}
-            <img src="{{ .page.Cover.ImgURL "small" }}" id="cover-img">
-            {{ else }}
-            <img id="cover-img" src="">
-            {{ end }}
-            <div class="success" aria-busy="true">Uploading cover image...</div>
-            <div class="default">Drop cover image here</div>
+            <div class="success" aria-busy="true">Uploading media...</div>
+            <div class="default">Drop media here</div>
         </div>
     </div>
+    
+    <div id="image-grid">
+        {{ range .images}}
+        <div class="image" style="background-image: url('{{ .ImgURL `small`}}');">
+            <img src="" >
+            <a href="{{ .ImgURL "large"}}" role="button" class="view">View full image</a>
+            <a role="button" onclick="copyShortcode(event)" data-shortcode="{{ .Shortcode }}" class="shortcode">Copy shortcode</a>
+        </div>
+        {{ end }}
+    </div>
+    
 </main>
+<template id="image-template">
+    <div class="image">
+        <img src="">
+        <a href="" role="button" class="view">View full image</a>
+        <a role="button" onclick="copyShortcode(event)" data-shortcode="" class="shortcode">Copy shortcode</a>
+    </div>
+</template>
+<style>
+    #image-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-column-gap: var(--spacing);
+        grid-row-gap: var(--spacing);
+    }
+    .image {
+        aspect-ratio: 1;
+        background-size: cover;
+        background-position: center;
+        padding: var(--spacing);
+        display: flex;
+        flex-direction: column;
+    }
+    .image a {
+        display: inline-block;
+        padding: 0.5em;
+        font-size: 0.75em;
+        border-radius: 0;
+        width: 100%;
+        background: var(--secondary);
+        border: none;
+        opacity: 0;
+        transition: all var(--transition);
+    }
+    .image a:first-of-type {
+        margin-top: auto;
+        margin-bottom: calc(var(--spacing)/4);
+    }
+    .image a:hover {
+        background: var(--primary);
+    }
+    .image:hover a {
+        opacity: 1;
+    }
+    
+    .file-area {
+        width: 100%;
+        position: relative;
+    }
+    .file-area input[type=file] {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+    input#audio, input#image {
+        height: 100%;
+        z-index: 9;
+    }
+    .file-area .file-dummy .player {
+        padding: 0;
+    }
+    .file-area .file-dummy {
+        width: 100%;
+        padding: var(--spacing);
+        border: 2px dashed rgba(255, 255, 255, 0.2);
+        text-align: center;
+        transition: background 0.3s ease-in-out;
+        margin-bottom: var(--spacing);
+        background: var(--background-color);
+        border-color: var(--form-element-border-color);
+    }
+    .file-area .file-dummy .success {
+        display: none;
+    }
+    #image:hover ~ .file-dummy, #audio:hover ~ .file-dummy {
+        background: #e5eaee;
+    }
+    .file-area input[type=file]:focus + .file-dummy {
+        background: var(--background-color);
+        border-color: var(--form-element-border-color);
+    }
+    .file-area input[type="file"]:valid + .file-dummy {
+        background: var(--background-color);
+        border-color: var(--form-element-border-color);
+    }
+    .file-area input[type=file]:valid + .file-dummy .success {
+        display: inline-block;
+    }
+    .file-area input[type=file]:valid + .file-dummy .default {
+        display: none;
+    }
+</style>
 <script>
-    document.getElementById("files").addEventListener('change', event => {
-        uploadImage().then(data => thenCover(data))
+    var count = 0
+    document.getElementById("upload").value = ''
+    document.getElementById("upload").addEventListener('change', event => {
+        count = document.getElementById("upload").files.length
+        Array.prototype.forEach.call(document.getElementById("upload").files, (file) => {
+            uploadImage(file).then(data => addImage(data))
+        });
     });
-    async function uploadImage() {
+    
+    function addImage(data) {
+        count--
+        if (data.status == 200) {
+            data.json().then(data => {
+                var template = document.getElementById('image-template');
+                var grid = document.getElementById('image-grid');
+                var clone = template.content.cloneNode(true);
+                clone.children[0].style["background-image"] = "url('" + data["small"] +"')"
+                clone.querySelector('.shortcode').setAttribute("data-shortcode", data["shortcode"])
+                clone.querySelector('.view').href = data["large"]
+                grid.prepend(clone)
+            })
+        } else {
+            // Handle this
+        }
+        if (count == 0) {
+            document.getElementById("upload").value = '';
+        }
+    }
+    
+    async function uploadImage(file) {
         let formData = new FormData();
-        formData.append("file", image.files[0]);
-        formData.append("geosite", "{{ .page.Code }}")
+        formData.append("file", file);
         const response = await fetch('{{ url "admin/upload" }}', {
             method: "POST",
             body: formData
         });
         return response
+    }
+    
+    function copyShortcode(event) {
+        navigator.clipboard.writeText(event.target.attributes["data-shortcode"].value);
     }
 </script>
 {{ end }}

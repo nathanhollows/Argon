@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"html/template"
 
 	"github.com/nathanhollows/Argon/internal/helpers"
 	"gorm.io/gorm"
@@ -10,17 +11,45 @@ import (
 // Media stores information about all the different types of media
 type Media struct {
 	gorm.Model
-	Title  string
-	File   string
-	Type   string
-	Format string
-	Hash   string
+	Title   string
+	File    string
+	Type    string
+	Format  string
+	Hash    string
+	Caption string
 }
 
-// GenerateShortcode will generate the shortcode that the system convert froms markdown.
+// Shortcode will generate the shortcode that the system convert froms markdown.
 // This function will turn a media image into a img src set for accessibly display.
-func (media *Media) GenerateShortcode() string {
-	return ""
+func (media *Media) Shortcode() string {
+	return fmt.Sprint("[[", media.Type, ":", media.ID, "]]")
+}
+
+// ToHTML generates the HTML for a specific media object
+// Returns string for use in the parser
+func (media *Media) ToHTML() template.HTML {
+	if media.Type == "image" {
+		imageTemplate := `<figure><img 
+		sizes="(max-width: 2000px) 100vw, 2000px" 
+		srcset="
+		%s 576w,
+		%s 1000w",
+		%s 2000w",
+		src="%s"
+		alt="%s">
+		<figcaption>%s</figcaption></figure>`
+
+		imgHTML := fmt.Sprintf(imageTemplate,
+			media.ImgURL("small"),
+			media.ImgURL("medium"),
+			media.ImgURL("large"),
+			media.ImgURL(""),
+			media.Caption,
+			media.Caption)
+
+		return template.HTML(imgHTML)
+	}
+	return template.HTML("<mark>The file does not exist</mark><br>")
 }
 
 // URL returns the URL for the given media object

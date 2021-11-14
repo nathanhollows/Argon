@@ -53,7 +53,7 @@ func Page(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 	data["trails"] = trails
 
 	data["title"] = page.Title
-	data["md"] = parseMD(page.Text)
+	data["md"] = parseMD(page.Text, &env.DB)
 	data["page"] = page
 
 	data["messages"] = flash.Get(w, r)

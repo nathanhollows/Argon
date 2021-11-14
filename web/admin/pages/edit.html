@@ -277,10 +277,9 @@
 
     function updateCover(data) {
         if (data.status == 200) {
-            data.text().then(text => {
-                console.log(text)
+            data.json().then(data => {
                 document.getElementById("image").value = null
-                document.getElementById("cover-img").src=text
+                document.getElementById("cover-img").src=data["small"]
             })
         } else {
             document.getElementById("image").value = null

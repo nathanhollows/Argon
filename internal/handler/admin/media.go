@@ -2,6 +2,7 @@ package admin
 
 import (
 	"crypto/sha256"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -21,8 +22,16 @@ import (
 // E.g. images, videos, audio
 func Media(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 	w.Header().Set("Content-Type", "text/html")
-
 	data := make(map[string]interface{})
+
+	var images = []models.Media{}
+	env.DB.Where("type = 'image'").Order("created_at DESC").Find(&images)
+	data["images"] = images
+
+	var audio = []models.Media{}
+	env.DB.Where("type = 'audio'").Order("created_at DESC").Find(&audio)
+	data["audio"] = audio
+
 	data["title"] = "Media"
 
 	return render(w, data, "media/index.html")
@@ -31,6 +40,7 @@ func Media(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 // Upload saves audio and images to the server
 // Only accepts POST requests
 func Upload(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
+	data := make(map[string]interface{})
 	if r.Method != http.MethodPost {
 		return handler.StatusError{Code: http.StatusMethodNotAllowed, Err: errors.New("Request must be POST")}
 	}
@@ -61,6 +71,7 @@ func Upload(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 		filename := fmt.Sprint(time.Now().Nanosecond(), "-", files[i].Filename)
 		filename = strings.Replace(filename, " ", "-", -1)
 		filepath := fmt.Sprint("web/static/uploads/", filetype, "/", filename)
+		data["type"] = filetype
 
 		hash := sha256.New()
 		tr := io.TeeReader(file, hash)
@@ -99,6 +110,8 @@ func Upload(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 			path := filepath
 			os.Remove(path)
 		}
+		data["url"] = media.URL()
+		data["shortcode"] = media.Shortcode()
 
 		if len(formdata.Value["page"]) != 0 {
 			page := models.Page{}
@@ -115,18 +128,24 @@ func Upload(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 			cmd := exec.Command("convert", filename, "-resize", "576x576>", "-quality", "95", "-define", "png:compression-filter=5", "small/"+filename)
 			cmd.Dir = "./web/static/uploads/image/"
 			cmd.Run()
-			cmd = exec.Command("convert", filename, "-resize", "1200x300>", "-quality", "95", "-define", "png:compression-filter=5", "medium/"+filename)
+			cmd = exec.Command("convert", filename, "-resize", "1000x1000>", "-quality", "95", "-define", "png:compression-filter=5", "medium/"+filename)
 			cmd.Dir = "./web/static/uploads/image/"
 			cmd.Run()
-			cmd = exec.Command("convert", filename, "-resize", "2000x700>", "-quality", "95", "-define", "png:compression-filter=5", "large/"+filename)
+			cmd = exec.Command("convert", filename, "-resize", "2000x2000>", "-quality", "95", "-define", "png:compression-filter=5", "large/"+filename)
 			cmd.Dir = "./web/static/uploads/image/"
 			cmd.Run()
-
-			fmt.Fprint(w, media.ImgURL("small"))
+			data["small"] = media.ImgURL("small")
+			data["medium"] = media.ImgURL("mediun")
+			data["large"] = media.ImgURL("large")
+			w.Header().Set("Content-Type", "application/json")
+			response, _ := json.Marshal(data)
+			fmt.Fprint(w, string(response))
 			return nil
 		}
 
-		fmt.Fprint(w, media.URL())
+		w.Header().Set("Content-Type", "application/json")
+		response, _ := json.Marshal(data)
+		fmt.Fprint(w, string(response))
 	}
 	return nil
 }

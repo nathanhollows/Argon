@@ -9,7 +9,9 @@ import (
 	"time"
 
 	"github.com/nathanhollows/Argon/internal/helpers"
+	"github.com/nathanhollows/Argon/internal/models"
 	"gitlab.com/golang-commonmark/markdown"
+	"gorm.io/gorm"
 )
 
 var funcs = template.FuncMap{
@@ -42,17 +44,23 @@ var funcs = template.FuncMap{
 	},
 }
 
-func parseMD(page string) template.HTML {
+func parseMD(page string, db *gorm.DB) template.HTML {
 	md := markdown.New(
 		markdown.XHTMLOutput(true),
 		markdown.HTML(true),
 		markdown.Breaks(true))
 
-	regMark := regexp.MustCompile("==(.*)==")
-	page = regMark.ReplaceAllString(page, "<mark>$1</mark>")
-	regArticle := regexp.MustCompile(":::([^:::]*):::")
-	page = regArticle.ReplaceAllString(page, `<article>
+	page = regexp.MustCompile("==(.*)==").ReplaceAllString(page, "<mark>$1</mark>")
+	page = regexp.MustCompile(":::([^:::]*):::").ReplaceAllString(page, `<article>
 $1</article>`)
+	regMedia := regexp.MustCompile(`\[\[\w+:(\d+)\]\]`)
+	mediaCodes := regMedia.FindAllStringSubmatch(page, -1)
+
+	for _, shortcode := range mediaCodes {
+		var media = models.Media{}
+		db.Where("id = ?", shortcode[1]).Find(&media)
+		page = strings.Replace(page, shortcode[0], string(media.ToHTML()), 1)
+	}
 
 	return template.HTML(md.RenderToString([]byte(page)))
 }

@@ -24,7 +24,7 @@ func RegularPage(env *handler.Env, w http.ResponseWriter, r *http.Request) error
 		http.Redirect(w, r, helpers.URL("404"), 404)
 		return nil
 	}
-	data["md"] = parseMD(page.Text)
+	data["md"] = parseMD(page.Text, &env.DB)
 	data["title"] = page.Title
 	data["messages"] = flash.Get(w, r)
 	return render(w, data, "page/default.html")

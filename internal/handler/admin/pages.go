@@ -220,7 +220,7 @@ func PreviewMD(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 		}
 
 		t := template.Must(template.New("md").Parse("{{.}}"))
-		t.Execute(w, parseMD(response.Md))
+		t.Execute(w, parseMD(response.Md, &env.DB))
 
 		return nil
 	}
