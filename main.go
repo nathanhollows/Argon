@@ -49,6 +49,7 @@ func init() {
 
 func main() {
 	env.DB.AutoMigrate(
+		&models.Poll{},
 		&models.Admin{},
 		&models.ScanEvent{},
 		&models.User{},
@@ -72,6 +73,7 @@ func routes() {
 	}
 
 	router.Handle("/library", handler.HandlePublic{Env: &env, H: public.Library})
+	router.Handle("/vote", handler.HandlePublic{Env: &env, H: public.Vote})
 
 	router.Handle("/{code:[A-z]{5}}", handler.HandlePublic{Env: &env, H: public.Page})
 	router.Handle("/s/{code:[A-z]{5}}", handler.HandlePublic{Env: &env, H: public.Scan})
