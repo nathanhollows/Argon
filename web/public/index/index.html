@@ -37,25 +37,12 @@
             </h2>
             <p>
                 <small>
-                    Find and scan this code to unlock it.
+                    Find and scan the code to unlock.
                 </small>
             </p>
         </a>
         {{ end }}
         {{ end }}
     </div>
-    
-    <hr>
-    
-    <p>Click to "find":</p>
-    <ul>
-        {{ range .pages }}
-        {{ if not .Seen }}
-        <li>
-            <a href="{{ url (print "s/" .Code) }}">{{ .Title }}</a>
-        </li>
-        {{ end }}
-        {{ end }}
-    </ul>
 </main>
 {{ end }}
