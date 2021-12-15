@@ -95,6 +95,7 @@ func Scan(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 	scan := models.ScanEvent{}
 	scan.Page = page
 	scan.UserID = fmt.Sprint(session.Values["id"])
+	scan.UserAgent = r.UserAgent()
 	env.DB.Model(&models.ScanEvent{}).Create(&scan)
 
 	http.Redirect(w, r, fmt.Sprintf("/%s", page.Code), http.StatusTemporaryRedirect)
