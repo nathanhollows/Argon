@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/nathanhollows/Argon/internal/flash"
 	"github.com/nathanhollows/Argon/internal/handler"
+	"github.com/nathanhollows/Argon/internal/helpers"
 	"github.com/nathanhollows/Argon/internal/models"
 	"gorm.io/gorm/clause"
 )
@@ -36,6 +37,12 @@ func Page(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 	var count int64
 	env.DB.Model(models.Page{}).Where("published = true AND gallery_id = ?", page.GalleryID).Count(&count)
 	data["count"] = count
+
+	admin, err := env.Session.Get(r, "admin")
+	if err == nil || admin.Values["id"] != nil {
+		message := fmt.Sprint(`<b>Admin:</b> <a href="`, helpers.URL("admin/pages/edit/"+string(page.Code)), `">Click to edit page</a>`)
+		flash.Set(w, r, flash.Message{Message: message})
+	}
 
 	session, err := env.Session.Get(r, "uid")
 	if err != nil || session.Values["id"] == nil {
