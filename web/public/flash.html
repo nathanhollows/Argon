@@ -3,7 +3,7 @@
         {{ range index . "messages" }}
         <article class="{{.Style}}" role="alert">
           {{ if .Title }}<strong>{{.Title}}</strong><br>{{end}}
-          {{ .Message }}
+          {{ unescape .Message }}
         </article>
         {{ end }}
   {{ end }}

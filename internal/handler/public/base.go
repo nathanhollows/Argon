@@ -52,6 +52,9 @@ var funcs = template.FuncMap{
 		modifiedtime := file.ModTime().Nanosecond()
 		return fmt.Sprint(modifiedtime)
 	},
+	"unescape": func(s string) template.HTML {
+		return template.HTML(s)
+	},
 }
 
 func parseMD(page string, db *gorm.DB) template.HTML {
