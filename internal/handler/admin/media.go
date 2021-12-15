@@ -14,6 +14,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/go-chi/chi"
 	"github.com/nathanhollows/Argon/internal/handler"
 	"github.com/nathanhollows/Argon/internal/models"
 )
@@ -76,7 +77,8 @@ func Upload(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 		hash := sha256.New()
 		tr := io.TeeReader(file, hash)
 
-		if filetype != "audio" && filetype != "image" {
+		fmt.Println(filetype)
+		if filetype != "audio" && filetype != "image" && filetype != "video" {
 			return handler.StatusError{Code: http.StatusNotAcceptable, Err: errors.New("no files available to read")}
 		}
 
@@ -147,5 +149,39 @@ func Upload(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 		response, _ := json.Marshal(data)
 		fmt.Fprint(w, string(response))
 	}
+	return nil
+}
+
+//  DeleteMedia removes media from the library if it isn't currently in use
+// DeleteMedia only accepts POST methods
+func DeleteMedia(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
+	mediaID := chi.URLParam(r, "id")
+
+	media := models.Media{}
+	result := env.DB.Model(&media).Where("id = ?", mediaID).Find(&media)
+	if result.Error != nil {
+		return handler.StatusError{Code: http.StatusNotFound, Err: errors.New("media not found")}
+	}
+
+	var count int = 0
+	query := fmt.Sprint(`SELECT count(*) as count FROM pages WHERE text LIKE "%` + media.Shortcode() + `%";`)
+	result = env.DB.Raw(query).Scan(&count)
+	if result.Error != nil {
+		return handler.StatusError{Code: http.StatusNotFound, Err: result.Error}
+	}
+
+	if media.Type == "image" {
+		os.Remove("./web/static/uploads/image/small/" + media.File)
+		os.Remove("./web/static/uploads/image/medium/" + media.File)
+		os.Remove("./web/static/uploads/image/large/" + media.File)
+	}
+
+	err := os.Remove("./web/static/uploads/" + media.Type + "/" + media.File)
+	env.DB.Delete(&media)
+
+	if err != nil {
+		return handler.StatusError{Code: http.StatusInternalServerError, Err: err}
+	}
+
 	return nil
 }

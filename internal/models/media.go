@@ -33,8 +33,8 @@ func (media *Media) ToHTML() template.HTML {
 		sizes="(max-width: 2000px) 100vw, 2000px" 
 		srcset="
 		%s 576w,
-		%s 1000w",
-		%s 2000w",
+		%s 1000w,
+		%s 2000w"
 		src="%s"
 		alt="%s">
 		<figcaption>%s</figcaption></figure>`

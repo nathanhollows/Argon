@@ -15,10 +15,17 @@
     
     <div id="image-grid">
         {{ range .images}}
-        <div class="image" style="background-image: url('{{ .ImgURL `small`}}');">
-            <img src="" >
-            <a href="{{ .ImgURL "large"}}" role="button" class="view">View full image</a>
-            <a role="button" onclick="copyShortcode(event)" data-shortcode="{{ .Shortcode }}" class="shortcode">Copy shortcode</a>
+        <div class="media">
+            <div class="image" style="background-image: url('{{ .ImgURL `small`}}');">
+                <a href="{{ .ImgURL `large`}}" role="button" class="view" target="blank">View large image</a>
+                <a role="button" onclick="copyShortcode(event)" data-shortcode="{{ .Shortcode }}" class="shortcode">Copy shortcode</a>
+                <a href="{{ url (print `admin/media/delete/` .ID) }}" role="button" class="view delete">Delete</a>
+            </div>
+            {{ if .Caption }}
+            <small contenteditable="true">{{ .Caption }}</small>
+            {{ else }}
+            <small contenteditable="true" onclick="document.execCommand('selectAll',false,null)"><em>Click to add caption</em> {{ .File }}</small>
+            {{ end }}
         </div>
         {{ end }}
     </div>
@@ -26,7 +33,6 @@
 </main>
 <template id="image-template">
     <div class="image">
-        <img src="">
         <a href="" role="button" class="view">View full image</a>
         <a role="button" onclick="copyShortcode(event)" data-shortcode="" class="shortcode">Copy shortcode</a>
     </div>
@@ -45,6 +51,7 @@
         padding: var(--spacing);
         display: flex;
         flex-direction: column;
+        justify-content: flex-end;
     }
     .image a {
         display: inline-block;
@@ -52,17 +59,16 @@
         font-size: 0.75em;
         border-radius: 0;
         width: 100%;
-        background: var(--secondary);
+        background: #596b78e6;
         border: none;
         opacity: 0;
         transition: all var(--transition);
     }
-    .image a:first-of-type {
-        margin-top: auto;
-        margin-bottom: calc(var(--spacing)/4);
-    }
     .image a:hover {
         background: var(--primary);
+    }
+    .view.delete:hover {
+        background: var(--del-color);
     }
     .image:hover a {
         opacity: 1;
