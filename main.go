@@ -77,6 +77,7 @@ func routes() {
 
 	router.Handle("/{code:[A-z]{5}}", handler.HandlePublic{Env: &env, H: public.Page})
 	router.Handle("/s/{code:[A-z]{5}}", handler.HandlePublic{Env: &env, H: public.Scan})
+	router.Handle("/qr/{code:[A-z]{5}} - {fluff}.{format:[A-z]{3}}", handler.HandlePublic{Env: &env, H: public.QR})
 
 	router.Handle("/login", handler.HandlePublic{Env: &env, H: public.Login})
 	router.Handle("/logout", handler.HandlePublic{Env: &env, H: public.Logout})
