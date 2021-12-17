@@ -16,7 +16,7 @@ import (
 func QR(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 	w.Header().Set("Content-Type", "image/svg+xml")
 	w.Header().Set("Cache-Control", "max-age=36000;")
-	path := fmt.Sprint(chi.URLParam(r, "code"))
+	path := fmt.Sprint("s/", chi.URLParam(r, "code"))
 	svgQR(helpers.URL(path), w)
 
 	return nil
