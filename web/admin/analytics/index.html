@@ -19,13 +19,9 @@
         </div>
         <div>
             <h2>
-                Log of scan events:
+                Download data:
             </h2>
-            <ul>
-                {{ range .dump }}
-                <li>{{ .CreatedAt.Format "Jan 02, 2006 3:04 pm" }} <a href="{{ url .Page.Code }}">{{.Page.Title}}</a></li>
-                {{ end }}
-            </ul>
+            <a href="{{ url "admin/data.csv" }}" role="button">Download data as CSV</a>
         </div>
     </div>
 
