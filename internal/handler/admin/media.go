@@ -17,6 +17,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/nathanhollows/Argon/internal/handler"
 	"github.com/nathanhollows/Argon/internal/models"
+	"gorm.io/gorm/clause"
 )
 
 // Media manages assests, go figure.
@@ -184,4 +185,40 @@ func DeleteMedia(env *handler.Env, w http.ResponseWriter, r *http.Request) error
 	}
 
 	return nil
+}
+
+// CaptionMedia saves the caption for a media file
+func CaptionMedia(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
+	//data := make(map[string]interface{})
+	if r.Method != http.MethodPatch {
+		return handler.StatusError{Code: http.StatusMethodNotAllowed, Err: errors.New("request must be PATCH")}
+	}
+
+	id := chi.URLParam(r, "id")
+	media := models.Media{}
+	result := env.DB.Where("id = ?", id).Preload(clause.Associations).Find(&media)
+
+	if result.RowsAffected == 0 {
+		return handler.StatusError{Code: http.StatusNotFound, Err: errors.New("media cannot be found")}
+	}
+
+	type caption struct {
+		Caption string
+	}
+	var response caption
+	err := json.NewDecoder(r.Body).Decode(&response)
+	if err != nil {
+		return handler.StatusError{Code: http.StatusBadRequest, Err: errors.New("could not read data")}
+	}
+
+	log.Println(response.Caption, media.ID)
+
+	media.Caption = response.Caption
+	res := env.DB.Model(&media).Where("id = ?", media.ID).Update("caption", response.Caption)
+	if res.RowsAffected == 0 {
+		return handler.StatusError{Code: http.StatusInternalServerError, Err: errors.New("something went wrong")}
+	} else {
+		return handler.StatusError{Code: http.StatusOK, Err: errors.New("caption saved")}
+	}
+
 }

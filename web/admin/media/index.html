@@ -22,9 +22,9 @@
                 <a href="{{ url (print `admin/media/delete/` .ID) }}" role="button" class="view delete">Delete</a>
             </div>
             {{ if .Caption }}
-            <small contenteditable="true">{{ .Caption }}</small>
+            <small contenteditable="true" data-id="{{ .ID }}">{{ .Caption }}</small>
             {{ else }}
-            <small contenteditable="true" onclick="document.execCommand('selectAll',false,null)"><em>Click to add caption</em> {{ .File }}</small>
+            <small contenteditable="true" data-id="{{ .ID }}" onclick="document.execCommand('selectAll',false,null)"><em>Click to add caption to {{ .File }}</em></small>
             {{ end }}
         </div>
         {{ end }}
@@ -170,5 +170,38 @@
     function copyShortcode(event) {
         navigator.clipboard.writeText(event.target.attributes["data-shortcode"].value);
     }
+    
+    function listenForCaptions() {
+        captions = document.querySelectorAll(".media small")
+        for(var i = 0; i < captions.length; i++) {
+            captions[i].addEventListener('focusout', (event) => {
+                if (event.target.querySelectorAll("em").length == 0) {
+                    event.target.setAttribute("aria-busy", true)
+                    var id = event.target.dataset["id"]
+                    
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("PATCH", '{{ url "admin/media/caption/" }}' + id, true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.send(JSON.stringify({
+                        caption: stripHtml(event.target.innerHTML)
+                    }));
+                    
+                    xhr.onreadystatechange = (e) => {
+                        event.target.setAttribute("aria-busy", false)
+                    }
+                }
+            });
+        }
+    }
+    
+    function stripHtml(html)
+    {
+        let tmp = document.createElement("DIV");
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || "";
+    }
+    
+    
+    listenForCaptions()
 </script>
 {{ end }}
