@@ -47,7 +47,7 @@ func Page(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 	session, err := env.Session.Get(r, "uid")
 	if err != nil || session.Values["id"] == nil {
 		fmt.Println(err)
-		session, err = env.Session.New(r, "uid")
+		session, _ = env.Session.New(r, "uid")
 		session.Options.HttpOnly = true
 		session.Options.SameSite = http.SameSiteStrictMode
 		session.Options.Secure = true
@@ -55,6 +55,13 @@ func Page(env *handler.Env, w http.ResponseWriter, r *http.Request) error {
 		session.Values["id"] = id.String()
 		session.Save(r, w)
 	}
+
+	scan := models.ScanEvent{}
+	scan.Page = page
+	scan.UserID = fmt.Sprint(session.Values["id"])
+	scan.UserAgent = r.UserAgent()
+	env.DB.Model(&models.ScanEvent{}).Create(&scan)
+
 	var trails []models.ResultsTrailCounts
 	env.DB.Raw(models.QueryTrailCountByUser, session.Values["id"]).Scan(&trails)
 	data["trails"] = trails

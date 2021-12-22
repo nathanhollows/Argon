@@ -13,7 +13,6 @@ func URL(patterns ...string) string {
 	} else {
 		u.Path = "/"
 	}
-	u.Scheme = "https"
 	if len(patterns) > 0 {
 		u.Path += patterns[0]
 	}
